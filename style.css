@@ -24,25 +24,28 @@
     background-color: var(--grey);
     color: #fff;
 }
-.flag h5{
+
+.flag h5 {
     background-color: black;
     color: #fff;
     margin-bottom: 0px;
     padding: 1rem;
 }
-.flag img{
+
+.flag img {
     width: 100%;
 }
+
 .weather {
     background-color: var(--grey);
     color: #fff;
 }
 
- #map {
+#map {
     height: 100%;
-  }
+}
 
-  .custom-map-control-button {
+.custom-map-control-button {
     background-color: #fff;
     border: 0;
     border-radius: 2px;
@@ -53,7 +56,26 @@
     overflow: hidden;
     height: 40px;
     cursor: pointer;
-  }
-  .custom-map-control-button:hover {
+}
+
+.custom-map-control-button:hover {
     background: rgb(235, 235, 235);
-  }
+}
+
+.dropdown-option {
+    overflow: scroll;
+}
+
+.mapouter {
+    position: relative;
+    text-align: right;
+    height: 500px;
+    width: 600px;
+}
+
+.gmap_canvas {
+    overflow: hidden;
+    background: none !important;
+    height: 500px;
+    width: 600px;
+}
