@@ -4,10 +4,10 @@ const getCityWeather = (lat, lon) => {
         `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=385a7a70d4dca4ccb79d668d67357807`
     )
         .then((response) => {
-            console.log(response);
             response.json()
         })
         .then((result) => {
+            console.log(result);
             const tempearature = result.list[0].main.temp;
             const humidity = result.list[0].main.humidity;
             const visibility = result.list[0].visibility;
@@ -16,23 +16,32 @@ const getCityWeather = (lat, lon) => {
         .catch((err) => {
             console.log(err);
         });
-    
-        countryDetail(countryList, true)
+
+
 };
 
 const getCityLatAndLon = (selectedCountry) => {
     fetch(
         `http://api.openweathermap.org/geo/1.0/direct?q=${selectedCountry}&limit=5&appid=385a7a70d4dca4ccb79d668d67357807`
     )
-        .then((response) => response.json())
+        .then((response) => {
+            console.log(response.json());
+            response.json()
+        })
         .then((result) => {
+            // console.log(selectedCountry);
+            console.log(result);
             const lat = result[0].lat;
             const lon = result[0].lon;
             getCityWeather(lat, lon);
+            countryDetail(result, true)
+
         })
         .catch((err) => {
+            console.log(".........................");
             console.log(err);
         });
+    $.ajax({})
 };
 const arrayToObjectByNestedKey = (array, keyName) => {
     return array.reduce((acc, cur) => {
@@ -49,6 +58,7 @@ const getCountryList = () => {
         .then((response) => response.json())
         .then((result) => {
             console.log(result);
+
             const res = result.map((country) => ({
                 flag: country.flags.png,
                 code: country.idd.root,
@@ -57,7 +67,15 @@ const getCountryList = () => {
                 name: country.name.common,
                 capital: country.capital,
                 region: country.region,
-                languages:country.languages
+                languages:
+                    function () {
+                        const languages = country.languages;
+                        let arrLan = []
+                        for (const language in languages) {
+                            arrLan.push(languages[language]);
+                        }
+                        return arrLan;
+                    }
             }));
             const countryList = arrayToObjectByNestedKey(res, "name");
             console.log(countryList);
@@ -87,7 +105,7 @@ $("#country-name-select").change(function (event) {
         countryDetail(selectedCountryInfo)
     }
 });
-const countryDetail = (countryList, isnull = false) => {
+const countryDetail = (countryList, isnull = false) => {la
     $('.country-detail').html('')
     if (isnull === true) {
 
@@ -100,8 +118,8 @@ const countryDetail = (countryList, isnull = false) => {
             <div><span class="title">Languages:</span></div>
             <div><span class="title">Timezones:</span></div>
             `)
-        
-            $('.weather').html(`
+
+        $('.weather').html(`
             <div><span class="title">Wind Speed:</span></div>
             <div><span class="title">Tempearature:</span></div>
             <div><span class="title">Humidity:</span></div>
@@ -116,13 +134,12 @@ const countryDetail = (countryList, isnull = false) => {
         <div><span class="title">Capital:</span><span>${countryList.capital[0]}</span></div>
         <div><span class="title">Region:</span><span>${countryList.region}</span></div>
         <div><span class="title">Population:</span><span>${countryList.population}</span></div>
-        <div><span class="title">Languages:</span><span>${countryList.language}</span></div>
+        <div><span class="title">Languages:</span><span>${countryList.languages()}</span></div>
         <div><span class="title">Timezones:</span><span>${countryList.timezones}</span></div>
         `)
 
         $('#flag').attr("src", `${countryList.flag}`)
-        
-        
+
         $('.weather').html(`
         <div><span class="title">Wind Speed:</span></div>
         <div><span class="title">Tempearature:</span></div>
